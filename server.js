@@ -12,14 +12,18 @@ mongoose.connect('mongodb+srv://chandupanr03:Mattegoda11@cluster0.rkikrwh.mongod
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Define your routes
+// Routes
 app.use('/api/products', require('./routes/product'));
 app.use('/api/categories', require('./routes/category'));
 
 app.get("/", (req, res) =>{
   res.send("Welcome to the DressStore Application")
 })
-
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+  console.log('Connected to the database');
+});
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
